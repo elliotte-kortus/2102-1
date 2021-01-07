@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en" >
 
@@ -13,7 +15,7 @@
 <link rel="mask-icon" type="" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
 
 
-  <title>CodePen - 2101-1</title>
+  <title>CodePen - 2102-1</title>
   
   
   
@@ -144,7 +146,7 @@ display: block;
   
       <script id="rendered-js" >
 console.clear();
-console.log("hello world");
+
 
 const students = [];
 
@@ -154,6 +156,8 @@ function makeStudent(username,first,last,gradelevel){
   student.first = first;
   student.last = last;
   student.gradelevel = gradelevel;
+  student.clickcount = 0;
+  student.lasttime = Date.now();
   return student;
 }
 
@@ -179,14 +183,12 @@ students.push(makeStudent("rashidharoun","Rashid","Haroun","11"))
 students.push(makeStudent("maximoavalone","Maximo","Avalone","9"))
 students.push(makeStudent("fionaalhadeff","Fiona","Alhadeff","10"))
 
-console.log(students);
-
 
 function pickStudent(){
   let randomStudentNum = Math.floor(Math.random()*students.length);
-  console.log(randomStudentNum);
+  
   let student = students[randomStudentNum];
-  console.log(student);
+  
   document.getElementById("picked").textContent = student.first + " " + student.last;
 }
 
@@ -195,6 +197,41 @@ pickStudent();
 let element =document.getElementById("pickStudent");
 
 element.addEventListener("click",pickStudent);
+ 
+
+function renderList(){
+  console.log("renerList")
+  students.sort(function(a,b){return a.clickcount-b.clickcount})
+  let content = "";
+  
+  for(let i = 0; i < students.length; i++){
+    console.log(students[i].username)
+    content += ` <div class="student" id="${students[i].username}">
+    <span>${students[i].first} ${students[i].last} ${students[i].clickcount} </span>
+  </div>`
+  }
+  
+  let element = document.getElementById("container");
+ element.innerHTML = content; 
+}
+
+function listclick(e){
+  console.log(e.target.id);
+  
+  for(let i = 0; i < students.length; i++){
+    if(students[i].username == e.target.id){
+      students[i].clickcount++;
+      }
+    }
+  console.log(students);
+  
+  renderList();
+}
+
+
+let renderclick = document.getElementById("container");
+renderclick.addEventListener("click",listclick);
+renderList();
     </script>
 
   
@@ -202,3 +239,4 @@ element.addEventListener("click",pickStudent);
 </body>
 
 </html>
+ 
